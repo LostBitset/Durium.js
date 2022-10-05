@@ -71,7 +71,7 @@ function make_script_sources_case(watch_expr: watchexpr, idx: number): String {
 		result = `
 		case "${watch_expr.name}":
 			__fggen_elem = document.getElementById("__FGELEM-${idx}");
-			__fggen_obj = FgImpulse();
+			__fggen_obj = new FgImpulse();
 			__fggen_old_${impulse} = __fggen_elem.${impulse} || (() => {});
 			__fggen_elem.${impulse} = () => {
 				__fggen_old_${impulse}();
@@ -83,7 +83,7 @@ function make_script_sources_case(watch_expr: watchexpr, idx: number): String {
 		result = `
 		case "${watch_expr.name}":
 			__fggen_elem = document.getElementById("__FGELEM-${idx}");
-			__fggen_obj = FgObservable(() => __fggen_elem.${watch_expr.observe});
+			__fggen_obj = new FgObservable(() => __fggen_elem.${watch_expr.observe});
 			__fggen_old_${impulse} = __fggen_elem.${impulse} || (() => {});
 			__fggen_elem.${impulse} = () => {
 				__fggen_old_${impulse}();

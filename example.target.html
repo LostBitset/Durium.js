@@ -14,7 +14,7 @@
 			switch (__fggen_obsname) {
 				case "new-todo":
 					__fggen_elem = document.getElementById("__FGELEM-0");
-					__fggen_obj = FgObservable(() => __fggen_elem.value);
+					__fggen_obj = new FgObservable(() => __fggen_elem.value);
 					__fggen_old_oninput = __fggen_elem.oninput || (() => {});
 					__fggen_elem.oninput = () => {
 						__fggen_old_oninput();
@@ -23,7 +23,7 @@
 					return __fggen_obj;
 				case "add-todo":
 					__fggen_elem = document.getElementById("__FGELEM-1");
-					__fggen_obj = FgImpulse();
+					__fggen_obj = new FgImpulse();
 					__fggen_old_onclick = __fggen_elem.onclick || (() => {});
 					__fggen_elem.onclick = () => {
 						__fggen_old_onclick();
