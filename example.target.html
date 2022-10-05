@@ -5,14 +5,11 @@
 		<input id="__FGELEM-0"></input>
 		<button id="__FGELEM-1">Add!</button>
 		<ul>
-			<s-view of="todos">
-				<s-repeat>
-					<li>...</li>
-				</s-repeat>
-			</s-view>
+			<template id="__FGTEMPLATE-0">
+			</template>
 		</ul>
 
-		<script id="__FGSCRIPT-fg-sources">
+		<script id="__FGSCRIPT-fg-sources" class="fg-GENERATED">
 		function obs(__fggen_obsname) {
 			switch (__fggen_obsname) {
 				case "new-todo":
@@ -39,7 +36,18 @@
 
 		<script class="fg-flow">
 		const new_todos = obs("new-todo").sample(obs("add-todo"));
-		const todos = new_todos.history();
+		const todos = new_todos.giveName('todo').history();
+		</script>
+
+		<script id="__FGSCRIPT-view-todos" class="fg-GENERATED">
+		todos.alsoSample(now()).subscribe(__fggen_value => {
+			let __fggen_dom = document.getElementById("__FGTEMPLATE-0");
+			__fgspec_repeat(__fggen_dom, __fggen_value,
+				(__fggen_dom, __fggen_value) => {
+					__fgspec_template(__fggen_dom, __fggen_value, "<li>{todo}</li>");
+				}
+			});
+		});
 		</script>
 	</body>
 </html>
