@@ -13,18 +13,18 @@
 		function obs(__fggen_obsname) {
 			switch (__fggen_obsname) {
 				case "new-todo":
-					let __fggen_elem = document.getElementById("__FGELEM-0");
-					let __fggen_obj = FgObservable(() => __fggen_elem.value);
-					let __fggen_old_oninput = __fggen_elem.oninput || (() => {});
+					__fggen_elem = document.getElementById("__FGELEM-0");
+					__fggen_obj = FgObservable(() => __fggen_elem.value);
+					__fggen_old_oninput = __fggen_elem.oninput || (() => {});
 					__fggen_elem.oninput = () => {
 						__fggen_old_oninput();
 						__fggen_obj.__control.fire();
 					};
 					return __fggen_obj;
 				case "add-todo":
-					let __fggen_elem = document.getElementById("__FGELEM-1");
-					let __fggen_obj = FgImpulse();
-					let __fggen_old_onclick = __fggen_elem.onclick || (() => {});
+					__fggen_elem = document.getElementById("__FGELEM-1");
+					__fggen_obj = FgImpulse();
+					__fggen_old_onclick = __fggen_elem.onclick || (() => {});
 					__fggen_elem.onclick = () => {
 						__fggen_old_onclick();
 						__fggen_obj.__control.fire();
@@ -36,17 +36,15 @@
 
 		<script class="fg-flow">
 		const new_todos = obs("new-todo").sample(obs("add-todo"));
-		const todos = new_todos.giveName('todo').history();
+		const todos = new_todos.giveName("todo").history();
 		</script>
 
 		<script id="__FGSCRIPT-view-todos" class="fg-GENERATED">
 		todos.alsoSample(now()).subscribe(__fggen_value => {
-			let __fggen_dom = document.getElementById("__FGTEMPLATE-0");
-			__fgspec_repeat(__fggen_dom, __fggen_value,
-				(__fggen_dom, __fggen_value) => {
-					__fgspec_template(__fggen_dom, __fggen_value, "<li>{todo}</li>");
-				}
-			});
+			__fggen_dom = document.getElementById("__FGTEMPLATE-0");
+			__fggen_dom.innerHTML = __fgspec_repeat(__fggen_value, __fggen_value => (
+				__fgspec_template(__fggen_value, "<li>{todo}</li>")
+			));
 		});
 		</script>
 	</body>

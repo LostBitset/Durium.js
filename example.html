@@ -7,14 +7,14 @@
 		<ul>
 			<s-view of="todos">
 				<s-repeat>
-					<li>...</li>
+					<li>{todo}</li>
 				</s-repeat>
 			</s-view>
 		</ul>
 
 		<script class="fg-flow">
 		let new_todos = obs("new-todo").sample(obs("add-todo"));
-		let todos = new_todos.history();
+		let todos = new_todos.giveName("todo").history();
 		</script>
 	</body>
 </html>
