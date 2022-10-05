@@ -10,7 +10,7 @@ function err(msg: string): never {
 	throw new Error(msg);
 }
 
-function unreachable() {
+function unreachable(): never {
 	throw new Error("Unreachable code.");
 }
 
@@ -54,13 +54,14 @@ interface watchexpr {
 	observe: string | null;
 }
 
-function make_script_sources(watch_exprs: watchexpr[][]): HTMLElement {
+function make_script_sources(watch_exprs: watchexpr[][]): string {
 	console.log(watch_exprs);
-	let res = new HTMLElement("script", {
-		id: "__FGSCRIPT-fg-sources",
-		class: "fg-GENERATED"
-	}, '', null, [-1, -1]);
-	return res;
+	let js = "console.log(\"TODO\");";
+	return `
+	<script id="__FGSCRIPT-fg-sources" class="fg-GENERATED">
+	${js}
+	</script>\n
+	`;
 }
 
 function parse_watchexprs(str: string): watchexpr[] | null {
