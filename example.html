@@ -2,8 +2,8 @@
 <html>
 	<head><title>Todo List Example</title></head>
 	<body>
-		<input observe|innerText="new_todo"></input>
-		<button impulse|click="add_todo">Add!</button>
+		<input watch="new-todo value@oninput">
+		<button watch="add-todo @onclick">Add!</button>
 		<ul>
 			<s-view of="todos">
 				<s-repeat>
@@ -13,7 +13,7 @@
 		</ul>
 
 		<script class="fg-flow">
-		let new_todos = obs("new-todo").sample(obs("add_todo"));
+		let new_todos = obs("new-todo").sample(obs("add-todo"));
 		let todos = new_todos.history();
 		</script>
 	</body>

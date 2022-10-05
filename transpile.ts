@@ -2,15 +2,15 @@
 
 const fs = require('fs');
 
-import { parse } from 'node-html-parser';
+import { parse, Node } from 'node-html-parser';
 
-function transpile(root) {
+function transpile(root: Node): Node {
 	return root;
 }
 
-fs.readFile('example.html', 'utf8', (err, data) => {
+fs.readFile('example.html', 'utf8', (err: string, data: string) => {
 	if (err) { return console.log(err); }
-	let results = transpile(parse(data));
+	let results = transpile(parse(data)).toString();
 	console.log(results);
 });
 
