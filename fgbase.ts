@@ -39,3 +39,39 @@ class FgObservableControl<T> {
 	}
 }
 
+class FgImpulse {
+	private _control: FgImpulseControl;
+
+	constructor(control: FgImpulseControl) {
+		this._control = control;
+	}
+
+	static impulse(): FgImpulse {
+		return new FgImpulse(
+			new FgImpulseControl()
+		);
+	}
+
+	subscribe(subscriber: () => void): void {
+		this._control.subscribe(subscriber);
+	}
+}
+
+class FgImpulseControl {
+	subscribers: (() => void)[];
+
+	constructor() {
+		this.subscribers = [];
+	}
+
+	subscribe(subscriber: () => void): void {
+		this.subscribers.push(subscriber);
+	}
+
+	fire(): void {
+		for (const subscriber of this.subscribers) {
+			subscriber();
+		}
+	}
+}
+
