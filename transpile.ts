@@ -26,6 +26,16 @@ function chunk_array<T>(arr: T[], size: number): T[][] {
 	return res;
 }
 
+function flatten_array_once<T>(arr: T[][]): T[] {
+	let res = [];
+	for (const sub of arr) {
+		for (const x of sub) {
+			res.push(x);
+		}
+	}
+	return res;
+}
+
 function empty_to_null(x: string): string | null {
 	if (x.length === 0) {
 		return null;
@@ -54,12 +64,47 @@ interface watchexpr {
 	observe: string | null;
 }
 
-function make_script_sources(watch_exprs: watchexpr[][]): string {
+function make_script_sources_case(watch_expr: watchexpr, idx: number): String {
+	let result;
+	let impulse = watch_expr.impulse;
+	if (watch_expr.observe === null) {
+		result = `
+		case "${watch_expr.name}":
+			__fggen_elem = document.getElementById("__FGELEM-${idx}");
+			__fggen_obj = FgImpulse();
+			__fggen_old_${impulse} = __fggen_elem.${impulse} || (() => {});
+			__fggen_elem.${impulse} = () => {
+				__fggen_old_${impulse}();
+				__fggen_obj.__control.fire();
+			};
+			return __fggen_obj;
+		`;
+	} else {
+		result = `
+		case "${watch_expr.name}":
+			__fggen_elem = document.getElementById("__FGELEM-${idx}");
+			__fggen_obj = FgObservable(() => __fggen_elem.${watch_expr.observe});
+			__fggen_old_${impulse} = __fggen_elem.${impulse} || (() => {});
+			__fggen_elem.${impulse} = () => {
+				__fggen_old_${impulse}();
+				__fggen_obj.__control.fire();
+			};
+			return __fggen_obj;
+		`;
+	}
+	return result.trim();
+}
+
+function make_script_sources(watch_exprs: watchexpr[]): string {
 	console.log(watch_exprs);
-	let js = "console.log(\"TODO\");";
+	let cases = watch_exprs.map(make_script_sources_case);
 	return `
 	<script id="__FGSCRIPT-fg-sources" class="fg-GENERATED">
-	${js}
+	function obs(__fggen_obsname) {
+		switch (__fggen_obsname) {
+			${cases.join("\n")}
+		}
+	}
 	</script>\n
 	`;
 }
@@ -92,7 +137,7 @@ function transpile(root: HTMLElement): HTMLElement {
 		elem.setAttribute("id", `__FGELEM-${idx}`);
 	});
 	let flow_section = root.querySelectorAll("script.fg-flow");
-	let script_sources = make_script_sources(watch_exprs);
+	let script_sources = make_script_sources(flatten_array_once(watch_exprs));
 	flow_section[0].insertAdjacentHTML('beforebegin', script_sources);
 	return root;
 }
