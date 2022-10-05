@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head><title>Todo List Example</title></head>
+	<body>
+		<input id="__FGELEM-0"></input>
+		<button id="__FGELEM-1">Add!</button>
+		<ul>
+			<s-view of="todos">
+				<s-repeat>
+					<li>...</li>
+				</s-repeat>
+			</s-view>
+		</ul>
+
+		<script id="__FGSCRIPT-fg-sources">
+		function obs(__fggen_obsname) {
+			switch (__fggen_obsname) {
+				case "new-todo":
+					let __fggen_elem = document.getElementById("__FGELEM-0");
+					let __fggen_obj = FgObservable(() => __fggen_elem.innerText);
+					let __fggen_old_onchange = __fggen_elem.onchange || (() => {});
+					__fggen_elem.onchange = () => {
+						__fggen_old_onchange();
+						__fggen_obj.__control.fire();
+					};
+					return __fggen_obj;
+				case "add-todo":
+					let __fggen_elem = document.getElementById("__FGELEM-1");
+					let __fggen_obj = FgImpulse();
+					let __fggen_old_onclick = __fggen_elem.onclick || (() => {});
+					__fggen_elem.onclick = () => {
+						__fggen_old_onclick();
+						__fggen_obj.__control.fire();
+					};
+					return __fggen_obj;
+			}
+		}
+		</script>
+
+		<script class="fg-flow">
+		const new_todos = obs("new-todo").sample(obs("add-todo"));
+		const todos = new_todos.history();
+		</script>
+	</body>
+</html>
+
