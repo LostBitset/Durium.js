@@ -96,7 +96,6 @@ function make_script_sources_case(watch_expr: watchexpr, idx: number): String {
 }
 
 function make_script_sources(watch_exprs: watchexpr[]): string {
-	console.log(watch_exprs);
 	let cases = watch_exprs.map(make_script_sources_case);
 	return `
 	<script id="__FGSCRIPT-fg-sources" class="fg-GENERATED">
