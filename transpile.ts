@@ -2,9 +2,11 @@
 
 const fs = require('fs');
 
-import { parse, Node } from 'node-html-parser';
+import { parse, HTMLElement } from 'node-html-parser';
 
-function transpile(root: Node): Node {
+function transpile(root: HTMLElement): HTMLElement {
+	let to_watch = root.querySelectorAll("[watch]");
+	console.log(to_watch.length);
 	return root;
 }
 
