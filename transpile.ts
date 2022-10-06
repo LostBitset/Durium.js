@@ -1,6 +1,6 @@
 // Transpile a FreeGroup HTML file to vanilla HTML/CSS/JS
 
-const fs = require('fs');
+import fs from 'fs';
 
 import { parse, HTMLElement } from 'node-html-parser';
 
@@ -65,7 +65,7 @@ interface watchexpr {
 }
 
 function make_script_sources_case(watch_expr: watchexpr, idx: number): String {
-	let result;
+	let result: String;
 	let impulse = watch_expr.impulse;
 	if (watch_expr.observe === null) {
 		result = `
@@ -141,7 +141,7 @@ function transpile(root: HTMLElement): HTMLElement {
 	return root;
 }
 
-fs.readFile('example.html', 'utf8', (err: string, data: string) => {
+fs.readFile('example.html', 'utf8', (err: any, data: string) => {
 	if (err) { return console.log(err); }
 	let results = transpile(parse(data)).toString();
 	console.log(results);
