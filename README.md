@@ -11,9 +11,9 @@ A Durium component is just fancy HTML, but with three unique abilities:
 The first two allow stations to be defined in terms of the state of the DOM. That might look something like this:
 ```js
 const todos = new Station();
-const component = fg.component(
-	fg("input", { value: todos.source }),          // When `todos` fires, it will send the value attribute
-	fg("button", { onclick: todos.fire }, "Add!")  // When the button is clicked, `todos` will fire
+const component = du.component(
+	du("input", { value: todos.source }),          // When `todos` fires, it will send the value attribute
+	du("button", { onclick: todos.fire }, "Add!")  // When the button is clicked, `todos` will fire
 );
 ```
 
@@ -30,10 +30,10 @@ We still need someway for information from stations to make it back to the user.
 A layout is just a function that converts some value to HTML. Normally, these would be called views, and look something like:
 ```js
 // This API doesn't actually exist, it's just for demonstration purposes
-fg.view(
-	fg("ul", fg.for(
+du.view(
+	du("ul", du.for(
 		"todo in all_todos",
-		fg("li", fg.var("todo"))
+		du("li", du.var("todo"))
 	))
 )
 ```
@@ -41,17 +41,23 @@ fg.view(
 This is nice and declarative, but it isn't reusable, it's specific to `all_todos`. Layouts are more generic than views. The view version above described how to render `all_todos`. A layout would describe how to render any `String[]`:
 ```js
 // This does exist :)
-const list = fg.layout(
-	fg("ul", fg.repeat(
-		fg("li", fg.value())
+const list = du.layout(
+	du("ul", fg.repeat(
+		du("li", fg.value())
 	))
 );
 ```
 
 Woah, where did the variables go!?
 
-Think about it. The `fg.value()` bit can render a `String`, and `fg.repeat(...)` can render a list of the stuff inside. This can render a `String[]`.
+Think about it. The `du.value()` bit can render a `String`, and `du.repeat(...)` can render a list of the stuff inside. This can render a `String[]`.
 
 
-Now, we can add the layout:
-
+Now, we can add the layout to our component:
+```js
+const component = du.component(
+	du("input", { value: todos.source }),          // When `todos` fires, it will send the value attribute
+	du("button", { onclick: todos.fire }, "Add!")  // When the button is clicked, `todos` will fire
+	list.of(all_todos)
+);
+```
