@@ -2,19 +2,31 @@
 <html>
 	<head><title>Todo List Example</title></head>
 	<body>
-		<input watch="new-todo value@oninput">
-		<button watch="add-todo @onclick">Add!</button>
+		<!-- RxJS and FreeGroup -->
+		<script src="https://unpkg.com/rxjs@^7/dist/bundles/rxjs.umd.min.js"></script>
+		<script src="FreeGroup.js"></script>
+
+		<input id="todo-input">
+		<button id="add">Add!</button>
 		<ul>
-			<s-view of="todos">
-				<s-repeat>
+			<template layout-of="todos">
+				<y-repeat>
 					<li>{todo}</li>
-				</s-repeat>
-			</s-view>
+				</y-repeat>
+			</template>
 		</ul>
 
 		<script class="fg-flow">
-		let new_todos = obs("new-todo").sample(obs("add-todo"));
-		let todos = new_todos.giveName("todo").history();
+		const { withLatestFrom, map, scan } = rxjs;
+		const [todo_input, add] = ["todo-input", "add"].map(document.getElementById);
+		const new_todos = fromEvent(todo_input, 'oninput');
+		const todos = fromEvent(add, 'onclick').pipe(
+			withLatestFrom(new_todos),
+			map(
+				([, input]) => { todo: input.value }
+			),
+			scan(([a, b]) => ([...a, b]))
+		);
 		</script>
 	</body>
 </html>
