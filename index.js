@@ -111,7 +111,7 @@ function du_section(k, ...inner) {
 			let inner_converted = inner.map(
 				x => x.toGivenHtml(value[k])
 			);
-			return `<div>${inner_converted.join("")}</div>`;
+			return `<div class="du_gen-section_${k}">${inner_converted.join("")}</div>`;
 		}
 	};
 }
@@ -128,9 +128,26 @@ function du_repeat(...inner) {
 					x => x.toGivenHtml(inner_value)
 				)
 			);
-			return `<div>${inner_converted.join("")}</div>`
+			return `<div class="du_gen-repeat">${inner_converted.join("")}</div>`
 		}
 	};
 }
 du.repeat = du_repeat;
+
+// Layout-internal node
+// Renders other nodes only if the value is not null
+function du_opt(...inner) {
+	return {
+		toHtmlGiven: value => {
+			if value !== null {
+				let inner_converted = inner.map(
+					x => x.toGivenHtml(value)
+				);
+				return `<div class="du_gen-opt_nonnull">${inner_converted.join("")}</div>`;
+			} else {
+				return `<div class="du_gen-opt_null"></div>`
+			}
+		}
+	};
+}
 
