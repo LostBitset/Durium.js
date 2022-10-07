@@ -55,9 +55,22 @@ Think about it. The `du.value()` bit can render a `String`, and `du.repeat(...)`
 
 Now, we can add the layout to our component:
 ```js
-const component = du.component(
+const todo_list = du.component(
 	du("input", { value: todos.source }),          // When `todos` fires, it will send the value attribute
 	du("button", { onclick: todos.fire }, "Add!")  // When the button is clicked, `todos` will fire
 	list.of(all_todos)
 );
+```
+
+Components can contain other components, via the `.use()` method:
+```js
+const top = du.component(
+	du("h1", "Example App"),
+	todo_list.use()
+);
+```
+
+Finally, we have a finished component that we can mount (add to the DOM):
+```js
+top.mount(document.body);
 ```
