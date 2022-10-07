@@ -60,9 +60,6 @@ class LayoutNode {
 	}
 }
 
-// Layout-internal nodes, which go inside a layout (think `du.value()`)
-class LayoutIntNode {}
-
 // The actual `du` function object
 // By itself (as a function), it is used to create simple HTML elements
 var du = function du(tag, ...args) {
@@ -76,4 +73,55 @@ var du = function du(tag, ...args) {
 	}
 	return new DuNode(attrs, inner);
 }
+
+// THIS DOESNT ACTUALLY DO ANYTHING RIGHT NOW, ILL ADD DOMPURIFY SOON
+function sanitizeHtml(dirty) {
+	return dirty; // NO NO NO NO NO
+}
+
+// Layout internal nodes are just objects with the `toHtmlGiven` function
+
+// Layout-internal node
+// Just renders the value as a string
+function du_value() {
+	return {
+		toHtmlGiven: value => {
+			return santizeHtml(value);
+		}
+	};
+}
+du.value = du_value;
+
+// Layout-internal node
+// Renders a particular property of the value as a string
+function du_prop(k) {
+	return {
+		toHtmlGiven: value => {
+			return sanitizeHtml(value[k]);
+		}
+	};
+}
+du.prop = du_prop;
+
+// Layout-internal node
+// Renders other nodes, with the inner value set to a specific property of the outer value
+function du_section(k, ...inner) {
+	return {
+		toHtmlGiven: value => {
+			let inner_converted = inner.map(
+				x => x.toGivenHtml(value[k])
+			);
+			return `<div>${inner_converted.join("")}</div>`;
+		}
+	};
+}
+du.section = du_section;
+
+// Layout-internal node
+// Renders other nodes over and over again, for each item in a list
+// The outer value is a list, and the inner value is the element type
+function du_repeat(...inner) {
+	throw new Error('not yet implemented');
+}
+du.repeat = du_repeat;
 
