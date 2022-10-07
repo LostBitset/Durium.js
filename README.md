@@ -74,3 +74,14 @@ Finally, we have a finished component that we can mount (add to the DOM):
 ```js
 top.mount(document.body);
 ```
+
+Also, layouts can display objects, by using `du.prop(<key>)` instead of `du.value()`:
+```js
+du.layout(
+	du("ul", du.repeat(
+		du("li", du.prop("todo"))
+	))
+);
+```
+
+This renders a `{ todo: string }[]`. 
