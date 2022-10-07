@@ -14,3 +14,10 @@ const todo_list = du.component(
   du("button", { onclick: todos.fire }, "Add!"),
   list.of(todos)
 );
+// Create a component that uses the `todo_list` component
+const top = du.component(
+  du("h1", "Example App"),
+  todo_list.use()
+);
+// Mount this new component
+top.mount(document.body);
