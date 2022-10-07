@@ -121,7 +121,16 @@ du.section = du_section;
 // Renders other nodes over and over again, for each item in a list
 // The outer value is a list, and the inner value is the element type
 function du_repeat(...inner) {
-	throw new Error('not yet implemented');
+	return {
+		toHtmlGiven: value => {
+			let inner_all = value.flatMap(
+				inner_value => inner.map(
+					x => x.toGivenHtml(inner_value)
+				)
+			);
+			return `<div>${inner_converted.join("")}</div>`
+		}
+	};
 }
 du.repeat = du_repeat;
 
