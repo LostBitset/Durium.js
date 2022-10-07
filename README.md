@@ -64,7 +64,7 @@ const todo_list = du.component(
 
 Components can contain other components, via the `.use()` method:
 ```js
-const top = du.component(
+const app = du.component(
 	du("h1", "Example App"),
 	todo_list.use()
 );
@@ -72,7 +72,7 @@ const top = du.component(
 
 Finally, we have a finished component that we can mount (add to the DOM):
 ```js
-top.mount(document.body);
+app.mount(document.body);
 ```
 
 Also, layouts can display objects, by using `du.prop(<key>)` instead of `du.value()`:
