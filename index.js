@@ -184,4 +184,5 @@ function du_opt(...inner) {
 		}
 	};
 }
+du.opt = du_opt;
 
