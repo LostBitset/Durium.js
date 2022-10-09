@@ -29,19 +29,38 @@ class StationSource {
 	func;
 }
 
+// Void elements in HTML
+const void_elements = [
+	'area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input',
+	'keygen', 'link', 'meta', 'param', 'source', 'track', 'wbr'
+];
+
 // Durium nodes, which are like DOM nodes but allowed to contain layout and layout-internal nodes
 // These can be rendered as HTML at any time (ideally only once)
 class DuNode {
+	tag;
+	is_void_element; // tag should be null if is_void_element_is true
 	attrs;
 	inner;
 
-	constructor(attrs, inner) {
+	constructor(tag, attrs, inner) {
+		this.tag = tag;
+		this.is_void_element = void_elements.includes(tag);
 		this.attrs = attrs;
 		this.inner = inner;
 	}
 
 	toHtml() {
-		throw new Error('not yet implemented');
+		let attrs_html =
+			Object.entries(this.attrs)
+			.map(([a, b]) => `${a}="${b}"`)
+			.join(" ");
+		if (this.is_void_element) {
+			return `<${this.tag} ${attrs_html}>`;
+		} else {
+			let inner_html = this.inner.map(x => x.toHtml()).join("");
+			return `<${this.tag} ${attrs_html}>${inner_html}</${this.tag}>`;
+		}
 	}
 }
 
@@ -80,6 +99,7 @@ function sanitizeHtml(dirty) {
 }
 
 // Layout internal nodes are just objects with the `toHtmlGiven` function
+// This takes in the value given to the layout, and converts it into HTML
 
 // Layout-internal node
 // Just renders the value as a string
