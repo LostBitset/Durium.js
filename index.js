@@ -139,7 +139,7 @@ du.repeat = du_repeat;
 function du_opt(...inner) {
 	return {
 		toHtmlGiven: value => {
-			if value !== null {
+			if (value !== null) {
 				let inner_converted = inner.map(
 					x => x.toGivenHtml(value)
 				);
