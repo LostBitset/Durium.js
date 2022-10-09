@@ -58,7 +58,9 @@ class DuNode {
 		if (this.is_void_element) {
 			return `<${this.tag} ${attrs_html}>`;
 		} else {
-			let inner_html = this.inner.map(x => x.toHtml()).join("");
+			let inner_html = this.inner.map(
+				x => x.toHtml()
+			).join("");
 			return `<${this.tag} ${attrs_html}>${inner_html}</${this.tag}>`;
 		}
 	}
@@ -72,7 +74,9 @@ class DuNode {
 		if (this.is_void_element) {
 			return `<${this.tag} ${attrs_html}>`;
 		} else {
-			let inner_html = this.inner.map(x => x.toHtmlGiven(value)).join("");
+			let inner_html = this.inner.map(
+				x => x.toHtmlGiven(value)
+			).join("");
 			return `<${this.tag} ${attrs_html}>${inner_html}</${this.tag}>`;
 		}
 	}
@@ -107,7 +111,7 @@ var du = function du(tag, ...args) {
 	return new DuNode(attrs, inner);
 }
 
-// THIS DOESNT ACTUALLY DO ANYTHING RIGHT NOW, ILL ADD DOMPURIFY SOON
+// THIS DOESNT ACTUALLY DO ANYTHING RIGHT NOW, I'LL ADD DOMPURIFY SOON
 function sanitizeHtml(dirty) {
 	return dirty; // NO NO NO NO NO
 }
