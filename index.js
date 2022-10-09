@@ -3,24 +3,14 @@
 // A "free observable"
 // Once you create one, you describe when it fires and what it fires afterwards
 class Station {
-	id;
 	subscribers;
 	_source;
-	static reg = {};
-	static next_id = 0;
 
 	constructor() {
-		this.id = Station.getNextId();
 		this.subscribers = [];
-		Station.reg[this.id] = this;
 	}
 
-	static getNextId() {
-		Station.next_id += 1;
-		return Station.next_id;
-	}
-
-	_fire() {
+	fire() {
 		let value = this.source.getValue();
 		for (const subscriber of this.subscribers) {
 			subscriber(value);
@@ -30,34 +20,13 @@ class Station {
 	subscribe(subscriber) {
 		this.subscribers.push(subscriber);
 	}
-
-	get source() {
-		return new StationSource(this.id);
-	}
-
-	get fire() {
-		return new StationFire(this.id);
-	}
 }
 
 // The source of values for a station
+// Just a thin wrapper around a () => T
 class StationSource {
-	station_id;
-
-	constructor(station_id) {
-		this.station_id = station_id;
-	}
+	func;
 }
-
-// The firing of a station
-class StationFire {
-	station_id;
-
-	constructor(station_id) {
-		this.station_id = station_id;
-	}
-}
-
 // Void elements in HTML
 const void_elements = [
 	'area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input',
