@@ -62,6 +62,20 @@ class DuNode {
 			return `<${this.tag} ${attrs_html}>${inner_html}</${this.tag}>`;
 		}
 	}
+
+	// You can have a DuNode inside of a layout
+	toHtmlGiven(value) {
+		let attrs_html =
+			Object.entries(this.attrs)
+			.map(([a, b]) => `${a}="${b}"`)
+			.join(" ");
+		if (this.is_void_element) {
+			return `<${this.tag} ${attrs_html}>`;
+		} else {
+			let inner_html = this.inner.map(x => x.toHtmlGiven(value)).join("");
+			return `<${this.tag} ${attrs_html}>${inner_html}</${this.tag}>`;
+		}
+	}
 }
 
 // Layout nodes, which provide a station for the inner parts to display
