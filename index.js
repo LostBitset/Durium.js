@@ -3,15 +3,24 @@
 // A "free observable"
 // Once you create one, you describe when it fires and what it fires afterwards
 class Station {
+	id;
 	subscribers;
-	source;
+	_source;
+	static reg = {};
+	static next_id = 0;
 
 	constructor() {
+		this.id = Station.getNextId();
 		this.subscribers = [];
-		this.source = new StationSource();
+		Station.reg[this.id] = this;
 	}
 
-	fire() {
+	static getNextId() {
+		Station.next_id += 1;
+		return Station.next_id;
+	}
+
+	_fire() {
 		let value = this.source.getValue();
 		for (const subscriber of this.subscribers) {
 			subscriber(value);
@@ -21,12 +30,32 @@ class Station {
 	subscribe(subscriber) {
 		this.subscribers.push(subscriber);
 	}
+
+	get source() {
+		return new StationSource(this.id);
+	}
+
+	get fire() {
+		return new StationFire(this.id);
+	}
 }
 
 // The source of values for a station
-// Just a wrapper around a () => T
 class StationSource {
-	func;
+	station_id;
+
+	constructor(station_id) {
+		this.station_id = station_id;
+	}
+}
+
+// The firing of a station
+class StationFire {
+	station_id;
+
+	constructor(station_id) {
+		this.station_id = station_id;
+	}
 }
 
 // Void elements in HTML
@@ -40,19 +69,37 @@ const void_elements = [
 class DuNode {
 	tag;
 	is_void_element; // tag should be null if is_void_element_is true
-	attrs;
+	attrs; // A [string, ]
 	inner;
+	suffix;
 
-	constructor(tag, attrs, inner) {
+	constructor(tag, attrs_object, inner) {
 		this.tag = tag;
 		this.is_void_element = void_elements.includes(tag);
-		this.attrs = attrs;
+		this.attrs =
+			Object.entries(attrs_object)
+			.map(
+				([a, b]) => {
+					if (b instanceof StationSource) {
+						this.suffix = b.suffixWatching(a);
+						return null;
+					} else if (b instanceof StationFire) {
+						return b.firingAsJS();
+					} else {
+						return [a, b];
+					}
+				}
+			)
+			.filter(x => x !== null);
 		this.inner = inner;
+		Object.entries(this.attrs).filter(
+			x => 
+		);
 	}
 
 	toHtml() {
 		let attrs_html =
-			Object.entries(this.attrs)
+			this.attrs
 			.map(([a, b]) => `${a}="${b}"`)
 			.join(" ");
 		if (this.is_void_element) {
