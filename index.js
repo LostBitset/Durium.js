@@ -38,7 +38,7 @@ const void_elements = [
 class DuNode {
 	tag;
 	is_void_element; // tag should be null if is_void_element_is true
-	attrs; // A [string, ]
+	attrs; // A [string, string][]
 	inner;
 	suffix;
 
