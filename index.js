@@ -64,6 +64,11 @@ class StationFiring {
 	constructor(station_id) {
 		this.station_id = station_id;
 	}
+
+	toJS() {
+		let station = `Station.reg[${this.station_id}]`
+		return `${station}.fire()`;
+	}
 }
 
 // Void elements in HTML
