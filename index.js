@@ -111,13 +111,15 @@ class DuNode {
 	}
 
 	toHtmlGivenTransform(transform) {
-		let suffix_el = "";
 		let set_id = null;
 		let attrs_str = this.attrs.map(
 			([a, b]) => {
 				if (b instanceof StationSource) {
-					suffix_el += b.getSuffixEl(a);
-					set_id = `du_genDuNode${this.getNextId()}`;
+					if (set_id === null) {
+						set_id = `du_genDuNode${this.getNextId()}`;
+					}
+					// This is a side-effect!
+					b.bindToElementAttribute(set_id, a);
 					return null;
 				} else if (b instanceof StationFiring) {
 					return [a, b.toJS()];
@@ -141,10 +143,6 @@ class DuNode {
 				transform
 			).join("");
 			element_html = `<${this.tag} ${attrs_html}>${inner_html}</${this.tag}>`;
-		}
-		if (set_id !== null) {
-			let suffix_prefix = du_suffix_prefix(set_id);
-			element_html += `<script>{ ${suffix_prefix}${suffix_el}}</script>`;
 		}
 		return element_html;
 	}
