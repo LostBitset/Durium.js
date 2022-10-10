@@ -48,6 +48,15 @@ class Station {
 		return res;
 	}
 
+	proxy() {
+		let res = new Station();
+		res._source = () => {
+			return this._source;
+		};
+		this.subscribe(res._fire);
+		return res;
+	}
+
 	scan(init, update) {
 		let res = new Station();
 		let state = { __state: init };
