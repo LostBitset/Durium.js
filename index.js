@@ -211,17 +211,17 @@ class LayoutNode {
 	}
 
 	toHtml() {
-		let set_id = `du_genLayoutNode-template-${LayoutNode.getNextId()}`;
-		let template = `<template id="${set_id}"></template>`;
+		let set_id = `du_genLayoutNode-div-${LayoutNode.getNextId()}`;
+		let div = `<div id="${set_id}"></div>`;
 		this.station.subscribe( // This is a side-effect!
 			value => {
-				let template_el = document.getElementById(set_id);
-				if (template_el !== undefined) {
-					template_el.innerHTML = this.inner.toHtmlGiven(value);
+				let div_el = document.getElementById(set_id);
+				if (div_el !== undefined) {
+					div_el.innerHTML = this.inner.toHtmlGiven(value);
 				}
 			}
 		);
-		return template;
+		return div;
 	}
 }
 
@@ -343,7 +343,8 @@ du.mount = du_mount;
 // The actual function to mount a Durium component
 function mount_durium_component(component, domNode) {
 	let topNode = component();
-	let template = 
-	domNode.appendChild();
+	let div = document.createElement('div');
+	domNode.appendChild(div);
+	div.innerHTML = topNode.toHtml();
 }
 
