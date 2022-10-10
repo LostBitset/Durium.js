@@ -158,14 +158,21 @@ class DuNode {
 class LayoutNode {
 	station_id;
 	inner;
+	static next_id# = 0;
 	
 	constructor(station, inner) {
-		this.station_id = station.id;
+		this.station_id = station_id;
 		this.inner = inner;
 	}
 
+	static getNextId() {
+		this.next_id# += 1;
+		return this.next_id#;
+	}
+
 	toHtml() {
-		throw new Error('not yet implemented');
+		let set_id = `du_genLayoutNode-template-${LayoutNode.getNextId()}`;
+		let template = `<template id="${set_id}"></template>`;
 	}
 }
 
