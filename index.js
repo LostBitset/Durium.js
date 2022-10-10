@@ -246,7 +246,7 @@ class LayoutNode {
 			}
 		);
 		LayoutNode.loaded_stations[this.id] = this.station;
-		return combined;
+		return div;
 	}
 }
 
@@ -322,6 +322,8 @@ du.section = du_section;
 // Renders other nodes over and over again, for each item in a list
 // The outer value is a list, and the inner value is the element type
 function du_repeat(...inner) {
+	// console.log('in du.repeat, inner:');
+	// console.log(inner);
 	return {
 		toHtmlGiven: value => {
 			console.log('du.repeat iterating over value:');
