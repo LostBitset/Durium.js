@@ -175,7 +175,9 @@ class LayoutNode {
 		this.station.subscribe( // This is a side-effect!
 			value => {
 				let template_el = document.getElementById(set_id);
-				template_el.innerHTML = this.inner.toHtmlGiven(value);
+				if (template_el !== undefined) {
+					template_el.innerHTML = this.inner.toHtmlGiven(value);
+				}
 			}
 		);
 		return template;
