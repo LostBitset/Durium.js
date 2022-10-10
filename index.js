@@ -279,7 +279,7 @@ function sanitizeHtml(dirty) {
 function du_value() {
 	return {
 		toHtmlGiven: value => {
-			return santizeHtml(value);
+			return sanitizeHtml(value);
 		}
 	};
 }
