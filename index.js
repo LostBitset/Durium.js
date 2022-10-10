@@ -318,13 +318,11 @@ function du_opt(...inner) {
 }
 du.opt = du_opt;
 
-// Just a shorthand for du("template", ...)
-// Commonly used in the ultra-short form du.t(...)
-function du_template(...inner) {
-	return du("template", ...inner);
+// Just a shorthand for du("div", ...)
+function du_div(...inner) {
+	return du("div", ...inner);
 }
-du.template = du_template;
-du.t = du_template;
+du.div = du_div;
 
 // Create a Layout object
 // Just forwards to the constructor
@@ -332,4 +330,20 @@ function du_layout(...inner) {
 	return new Layout(...inner);
 }
 du.layout = du_layout;
+
+// Mount a Durium component
+// Durium components are just functions, and in this case, they can't take any arguments
+// They must return a valid node (an object with a toHtml function)
+// This just forwards to the mount_durium_component function
+function du_mount(component, domNode) {
+	mount_durium_component(component, domNode);
+}
+du.mount = du_mount;
+
+// The actual function to mount a Durium component
+function mount_durium_component(component, domNode) {
+	let topNode = component();
+	let template = 
+	domNode.appendChild();
+}
 

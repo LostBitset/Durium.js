@@ -11,18 +11,17 @@ function todo_list() {
 		))
 	);
 	// Setup the station, and have the layout display it
-	// du.t(...) is just shorthand for du("template", ...)
-	// Read it as if it was a regex, it can be pronounced "duct", "duet", or "dust"
-	return du.t(
-	  du("input", { value: todos.source }),
-	  du("button", { onclick: todos.fire }, "Add!"),
-	  list.of(todos)
-	);
+	// du.div(...) is just a shorthand for du("div", ...)
+	return du.div(
+		du("input", { value: todos.source }),
+		du("button", { onclick: todos.fire }, "Add!"),
+		list.of(todos)
+	]);
 }
 // Create a component that uses the `todo_list` component
 // Remember, they're just functions
 function app() {
-	return du.t(
+	return du.div(
 		du("h1", "Example App"),
 		todo_list()
 	);
