@@ -254,15 +254,10 @@ var du = function du(tag, ...args) {
 	if (typeof args[0] === "object" && !isNodeObject(args[0])) {
 		attrs = args[0];
 		inner = args.slice(1);
-		console.log(args);
 	} else {
-		console.log('__no_attrs__');
 		attrs = {};
 		inner = args;
 	}
-	console.log('new DuNode(');
-	console.log(tag, attrs, inner);
-	console.log(')')
 	return new DuNode(tag, attrs, inner);
 }
 
@@ -332,12 +327,8 @@ du.section = du_section;
 // Renders other nodes over and over again, for each item in a list
 // The outer value is a list, and the inner value is the element type
 function du_repeat(...inner) {
-	// console.log('in du.repeat, inner:');
-	// console.log(inner);
 	return {
 		toHtmlGiven: value => {
-			console.log('du.repeat iterating over value:');
-			console.log(value);
 			let inner_all = value.flatMap(
 				inner_value => inner.map(
 					x => toHtmlGivenFunction(x, inner_value)
