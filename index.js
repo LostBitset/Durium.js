@@ -246,10 +246,6 @@ class LayoutNode {
 			}
 		);
 		LayoutNode.loaded_stations[this.id] = this.station;
-		let station = `Station.reg[${this.station.id}]`;
-		let suffix_js = `${station}._fire();`;
-		let load_suffix = `<script>${suffix_js}</script>`;
-		let combined = `${div}${load_suffix}`;
 		return combined;
 	}
 }
@@ -335,7 +331,7 @@ function du_repeat(...inner) {
 					x => x.toGivenHtml(inner_value)
 				)
 			);
-			return `<div class="du_gen-repeat">${inner_converted.join("")}</div>`
+			return `<div class="du_gen-repeat">${inner_all.join("")}</div>`
 		}
 	};
 }
