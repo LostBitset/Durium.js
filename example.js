@@ -13,8 +13,8 @@ function todo_list() {
 	// Setup the station, and have the layout display it
 	// du.div(...) is just a shorthand for du("div", ...)
 	return du.div(
-		du("input", { value: todos.source }),
-		du("button", { onclick: todos.fire }, "Add!"),
+		du("input", { value: new_todos.source }),
+		du("button", { onclick: new_todos.fire }, "Add!"),
 		list.of(todos)
 	]);
 }
