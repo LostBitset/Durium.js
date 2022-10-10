@@ -246,17 +246,27 @@ class LayoutNode {
 	}
 }
 
+// Check if an object is a node object
+function isNodeObject(obj) {
+	return (obj['toHtml'] !== undefined) || (obj['toHtmlGiven'] !== undefined); 
+}
+
 // The actual `du` function object
 // By itself (as a function), it is used to create simple HTML elements
 var du = function du(tag, ...args) {
 	let attrs, inner;
-	if (typeof args[0] === "object" && !(args[0].hasOwnProperty("__not_attrs"))) {
+	if (typeof args[0] === "object" && !isNodeObject(args[0])) {
 		attrs = args[0];
 		inner = args.slice(1);
+		console.log(args);
 	} else {
+		console.log('__no_attrs__');
 		attrs = {};
 		inner = args;
 	}
+	console.log('new DuNode(');
+	console.log(tag, attrs, inner);
+	console.log(')')
 	return new DuNode(tag, attrs, inner);
 }
 
