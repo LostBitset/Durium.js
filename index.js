@@ -50,6 +50,25 @@ class Station {
 		this.subscribe(res._fire);
 		return res;
 	}
+
+	scan(init, update) {
+		let res = new Station();
+		let state = { __state: init };
+		res._source = () => state.__state;
+		this.subscribe(value => {
+			state.__state = update(state.__state, value);
+			res._fire();
+		});
+		return res;
+	}
+
+	history({ reverse = false } = {}) {
+		if (reverse) {
+			return this.scan([], (state, value) => [value, ...state]);
+		} else {
+			return this.scan([], (state, value) => [...state, value]);
+		}
+	}
 }
 
 // The source of values for a station
