@@ -172,7 +172,15 @@ class DuNode {
 			element_html = `<${this.tag} ${attrs_html}>`;
 		} else {
 			let inner_html = this.inner.map(
-				transform
+				item => {
+					// Strings should just be sanitized, they don't need to be
+					// transformed into HTML
+					if (typeof item === "string") {
+						return sanitizeHtml(item);
+					} else {
+						return transform(item);
+					}
+				}
 			).join("");
 			element_html = `<${this.tag} ${attrs_html}>${inner_html}</${this.tag}>`;
 		}
