@@ -133,12 +133,14 @@ class DuNode {
 	attrs; // A [string, string][]
 	inner;
 	suffix;
+	id;
 
 	constructor(tag, attrs_object, inner) {
 		this.tag = tag;
 		this.is_void_element = void_elements.includes(tag);
 		this.attrs = Object.entries(attrs_object)
 		this.inner = inner;
+		this.id = DuNode.getNextId();
 	}
 
 	static getNextId() {
@@ -146,14 +148,19 @@ class DuNode {
 		return DuNode.next_id_RAW;
 	}
 
+	getHtmlId() {
+		return `~du${this.id}`;
+	}
+
+	getElement() {
+		return document.getElementById(this.getHtmlId());
+	}
+
 	toHtmlGivenTransform(transform) {
-		let set_id = null;
+		let set_id = this.getHtmlId();
 		let attrs_str = this.attrs.map(
 			([a, b]) => {
 				if (b instanceof StationSource) {
-					if (set_id === null) {
-						set_id = `du_genDuNode${DuNode.getNextId()}`;
-					}
 					// This is a side-effect!
 					b.bindToElementAttribute(set_id, a);
 					return null;
