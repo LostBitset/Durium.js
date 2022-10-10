@@ -156,12 +156,12 @@ class DuNode {
 
 // Layout nodes, which provide a station for the inner parts to display
 class LayoutNode {
-	station_id;
+	station;
 	inner;
 	static next_id# = 0;
 	
 	constructor(station, inner) {
-		this.station_id = station_id;
+		this.station = station;
 		this.inner = inner;
 	}
 
