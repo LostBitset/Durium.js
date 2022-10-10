@@ -20,8 +20,13 @@ class Station {
 		return Station.next_id#;
 	}
 
-	_fire() {
-		let value = this._source.getValue();
+	_fire(override) {
+		let value;
+		if (override === undefined) {
+			value = this._source.getValue();
+		} else {
+			value = override;
+		}
 		for (const subscriber of this.subscribers) {
 			subscriber(value);
 		}
@@ -37,6 +42,13 @@ class Station {
 
 	get fire() {
 		return new StationFiring(this.id);
+	}
+
+	map(transform) {
+		let res = new Station();
+		res._source = null;
+		this.subscribe(res._fire);
+		return res;
 	}
 }
 
