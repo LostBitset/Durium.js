@@ -308,3 +308,12 @@ function du_opt(...inner) {
 }
 du.opt = du_opt;
 
+// Just a shorthand for du("template", ...)
+// Commonly used in the ultra-short form du.t(...)
+function du_template(...inner) {
+	return du("template", ...inner);
+}
+du.template = du_template;
+du.t = du_template;
+
+

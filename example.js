@@ -11,8 +11,8 @@ function todo_list() {
 	  ))
 	);
 	// Setup the station, and have the layout display it
-	// du.template(...) is just shorthand for du("template", ...)
-	return = du.template(
+	// du.t(...) is just shorthand for du("template", ...)
+	return du.t(
 	  du("input", { value: todos.source }),
 	  du("button", { onclick: todos.fire }, "Add!"),
 	  list.of(todos)
@@ -21,7 +21,7 @@ function todo_list() {
 // Create a component that uses the `todo_list` component
 // Remember, they're just functions
 function app() {
-	return du.template(
+	return du.t(
 		du("h1", "Example App"),
 		todo_list()
 	);
