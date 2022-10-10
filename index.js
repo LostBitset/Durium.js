@@ -210,7 +210,7 @@ class LayoutNode {
 	static next_id# = 0;
 	
 	constructor(station, inner) {
-		this.station = station;
+		this.station = station.proxy();
 		this.inner = inner;
 	}
 
@@ -230,7 +230,11 @@ class LayoutNode {
 				}
 			}
 		);
-		return div;
+		let station = `Station.reg[${this.station.id}]`;
+		let suffix_js = `${station}._fire();`;
+		let load_suffix = `<script>${suffix_js}</script>`;
+		let combined = `${div}${load_suffix}`;
+		return combined;
 	}
 }
 
