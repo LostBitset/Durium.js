@@ -44,7 +44,9 @@ class Station {
 		res._source = () => {
 			return transform(this._source)
 		};
-		this.subscribe(res._fire);
+		this.subscribe(() => {
+			res._fire();
+		});
 		return res;
 	}
 
@@ -53,7 +55,9 @@ class Station {
 		res._source = () => {
 			return this._source;
 		};
-		this.subscribe(res._fire);
+		this.subscribe(() => {
+			res._fire();
+		});
 		return res;
 	}
 
