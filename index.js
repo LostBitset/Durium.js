@@ -48,6 +48,12 @@ class StationSource {
 	constructor(station_id) {
 		this.station_id = station_id;
 	}
+
+	getSuffixEl(attr) {
+		let lhs = `Station.reg[${this.station_id}]._source`;
+		let rhs = `(() => el.attr)`
+		return `${lhs} = ${rhs}; `;
+	}
 }
 
 // The firing of values for a station
@@ -99,7 +105,7 @@ class DuNode {
 		let attrs_str = this.attrs.map(
 			([a, b]) => {
 				if (b instanceof StationSource) {
-					suffix_el += b.getSuffixEl();
+					suffix_el += b.getSuffixEl(a);
 					set_id = `du_genDuNode${this.getNextId()}`;
 					return null;
 				} else if (b instanceof StationFiring) {
@@ -127,7 +133,7 @@ class DuNode {
 		}
 		if (set_id !== null) {
 			let suffix_prefix = du_suffix_prefix(set_id);
-			element_html += `<script>{ ${suffix_prefix}${suffix_el} }</script>`;
+			element_html += `<script>{ ${suffix_prefix}${suffix_el}}</script>`;
 		}
 		return element_html;
 	}
