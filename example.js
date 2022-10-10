@@ -12,6 +12,7 @@ function todo_list() {
 	);
 	// Setup the station, and have the layout display it
 	// du.t(...) is just shorthand for du("template", ...)
+	// Read it as if it was a regex, it can be pronounced "duct", "duet", or "dust"
 	return du.t(
 	  du("input", { value: todos.source }),
 	  du("button", { onclick: todos.fire }, "Add!"),
