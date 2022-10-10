@@ -173,6 +173,7 @@ class LayoutNode {
 	toHtml() {
 		let set_id = `du_genLayoutNode-template-${LayoutNode.getNextId()}`;
 		let template = `<template id="${set_id}"></template>`;
+		return template;
 	}
 }
 
