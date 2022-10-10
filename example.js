@@ -16,7 +16,7 @@ function todo_list() {
 		du("input", { value: new_todos.source }),
 		du("button", { onclick: new_todos.fire }, "Add!"),
 		list.of(todos)
-	]);
+	);
 }
 // Create a component that uses the `todo_list` component
 // Remember, they're just functions

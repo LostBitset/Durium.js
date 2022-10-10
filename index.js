@@ -4,7 +4,7 @@
 // Once you create one, you describe when it fires and what it fires afterwards
 class Station {
 	static reg = {};
-	static next_id# = 0;
+	static next_id_RAW = 0;
 	subscribers;
 	_source;
 	id;
@@ -16,8 +16,8 @@ class Station {
 	}
 
 	static getNextId() {
-		Station.next_id# += 1;
-		return Station.next_id#;
+		Station.next_id_RAW += 1;
+		return Station.next_id_RAW;
 	}
 
 	_fire() {
@@ -123,7 +123,7 @@ const void_elements = [
 // Durium nodes, which are like DOM nodes but allowed to contain layout and layout-internal nodes
 // These can be rendered as HTML at any time (ideally only once)
 class DuNode {
-	static next_id# = 0;
+	static next_id_RAW = 0;
 	tag;
 	is_void_element; // tag should be null if is_void_element_is true
 	attrs; // A [string, string][]
@@ -138,8 +138,8 @@ class DuNode {
 	}
 
 	static getNextId() {
-		DuNode.next_id# += 1;
-		return DuNode.next_id#;
+		DuNode.next_id_RAW += 1;
+		return DuNode.next_id_RAW;
 	}
 
 	toHtmlGivenTransform(transform) {
@@ -195,7 +195,7 @@ class Layout {
 	inner;
 
 	constructor(...inner) {
-		this.inner = du.t(...inner);
+		this.inner = du.div(...inner);
 	}
 
 	of(station) {
@@ -207,7 +207,7 @@ class Layout {
 class LayoutNode {
 	station;
 	inner;
-	static next_id# = 0;
+	static next_id_RAW = 0;
 	
 	constructor(station, inner) {
 		this.station = station.proxy();
@@ -215,8 +215,8 @@ class LayoutNode {
 	}
 
 	static getNextId() {
-		this.next_id# += 1;
-		return this.next_id#;
+		this.next_id_RAW += 1;
+		return this.next_id_RAW;
 	}
 
 	toHtml() {
