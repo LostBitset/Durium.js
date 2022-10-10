@@ -3,15 +3,25 @@
 // A "free observable"
 // Once you create one, you describe when it fires and what it fires afterwards
 class Station {
+	static reg = {};
+	static next_id# = 0;
 	subscribers;
 	_source;
+	id;
 
 	constructor() {
+		this.id = Station.getNextId();
 		this.subscribers = [];
+		Station.reg[this.id] = this;
 	}
 
-	fire() {
-		let value = this.source.getValue();
+	static getNextId() {
+		Station.next_id# += 1;
+		return Station.next_id#;
+	}
+
+	_fire() {
+		let value = this._source.getValue();
 		for (const subscriber of this.subscribers) {
 			subscriber(value);
 		}
@@ -20,22 +30,51 @@ class Station {
 	subscribe(subscriber) {
 		this.subscribers.push(subscriber);
 	}
+
+	get source() {
+		return new StationSource(this.id);
+	}
+
+	get fire() {
+		return new StationFiring(this.id);
+	}
 }
 
 // The source of values for a station
-// Just a thin wrapper around a () => T
+// Just holds the station ID
 class StationSource {
-	func;
+	station_id;
+
+	constructor(station_id) {
+		this.station_id = station_id;
+	}
 }
+
+// The firing of values for a station
+// Just holds the station ID
+class StationFiring {
+	station_id;
+
+	constructor(station_id) {
+		this.station_id = station_id;
+	}
+}
+
 // Void elements in HTML
 const void_elements = [
 	'area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input',
 	'keygen', 'link', 'meta', 'param', 'source', 'track', 'wbr'
 ];
 
+// Get the prefix of an HTML suffix (the part that defines the element) given an ID
+function du_suffix_prefix(id) {
+	return `let el = document.getElementById("${id}"); `;
+}
+
 // Durium nodes, which are like DOM nodes but allowed to contain layout and layout-internal nodes
 // These can be rendered as HTML at any time (ideally only once)
 class DuNode {
+	static next_id# = 0;
 	tag;
 	is_void_element; // tag should be null if is_void_element_is true
 	attrs; // A [string, string][]
@@ -45,56 +84,62 @@ class DuNode {
 	constructor(tag, attrs_object, inner) {
 		this.tag = tag;
 		this.is_void_element = void_elements.includes(tag);
-		this.attrs =
-			Object.entries(attrs_object)
-			.map(
-				([a, b]) => {
-					if (b instanceof StationSource) {
-						this.suffix = b.suffixWatching(a);
-						return null;
-					} else if (b instanceof StationFire) {
-						return b.firingAsJS();
-					} else {
-						return [a, b];
-					}
-				}
-			)
-			.filter(x => x !== null);
+		this.attrs = Object.entries(attrs_object)
 		this.inner = inner;
-		Object.entries(this.attrs).filter(
-			x => 
-		);
 	}
 
-	toHtml() {
+	static getNextId() {
+		DuNode.next_id# += 1;
+		return DuNode.next_id#;
+	}
+
+	toHtmlGivenTransform(transform) {
+		let suffix_el = "";
+		let set_id = null;
+		let attrs_str = this.attrs.map(
+			([a, b]) => {
+				if (b instanceof StationSource) {
+					suffix_el += b.getSuffixEl();
+					set_id = `du_genDuNode${this.getNextId()}`;
+					return null;
+				} else if (b instanceof StationFiring) {
+					return [a, b.toJS()];
+				} else {
+					return [a, b];
+				}
+			}
+		).filter(x => x !== null);
 		let attrs_html =
-			this.attrs
+			attrs_str
 			.map(([a, b]) => `${a}="${b}"`)
 			.join(" ");
+		if (set_id !== null) {
+			attrs_html += ` id="${set_id}"`;
+		}
+		let element_html;
 		if (this.is_void_element) {
-			return `<${this.tag} ${attrs_html}>`;
+			element_html = `<${this.tag} ${attrs_html}>`;
 		} else {
 			let inner_html = this.inner.map(
-				x => x.toHtml()
+				transform
 			).join("");
-			return `<${this.tag} ${attrs_html}>${inner_html}</${this.tag}>`;
+			element_html = `<${this.tag} ${attrs_html}>${inner_html}</${this.tag}>`;
 		}
+		if (set_id !== null) {
+			let suffix_prefix = du_suffix_prefix(set_id);
+			element_html += `<script>{ ${suffix_prefix}${suffix_el} }</script>`;
+		}
+		return element_html;
+	}
+
+	// The normal toHtml function
+	toHtml() {
+		return this.toHtmlGivenTransform(x => x.toHtml());
 	}
 
 	// You can have a DuNode inside of a layout
 	toHtmlGiven(value) {
-		let attrs_html =
-			Object.entries(this.attrs)
-			.map(([a, b]) => `${a}="${b}"`)
-			.join(" ");
-		if (this.is_void_element) {
-			return `<${this.tag} ${attrs_html}>`;
-		} else {
-			let inner_html = this.inner.map(
-				x => x.toHtmlGiven(value)
-			).join("");
-			return `<${this.tag} ${attrs_html}>${inner_html}</${this.tag}>`;
-		}
+		return this.toHtmlGivenTransform(x => x.toHtmlGiven(value));
 	}
 }
 
