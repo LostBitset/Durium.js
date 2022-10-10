@@ -21,7 +21,7 @@ class Station {
 	}
 
 	_fire() {
-		let value = this._source.getValue();
+		let value = this._source();
 		for (const subscriber of this.subscribers) {
 			subscriber(value);
 		}
@@ -84,11 +84,6 @@ class StationSource {
 
 	constructor(station_id) {
 		this.station_id = station_id;
-	}
-
-	getValue() {
-		let station = Station.reg[this.station_id];
-		station._source();
 	}
 
 	bindTo(func) {
