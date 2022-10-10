@@ -8,21 +8,23 @@ A Durium component is just fancy HTML, but with three unique abilities:
 2. The ability to bind events to the firing of stations
 3. The ability to contain *layouts*
 
+See the `example.js` file for a simple to-do list with plenty of comments explaining what's going on. 
+
 The first two allow stations to be defined in terms of the state of the DOM. That might look something like this:
 ```js
-const todos = new Station();
+const new_todos = new Station();
 const component = du.component(
-	du("input", { value: todos.source }),          // When `todos` fires, it will send the value attribute
-	du("button", { onclick: todos.fire }, "Add!")  // When the button is clicked, `todos` will fire
+	du("input", { value: new_todos.source }),          // When `new_todos` fires, it will send the value attribute
+	du("button", { onclick: new_todos.fire }, "Add!")  // When the button is clicked, `newtodos` will fire
 );
 ```
 
-Here, `todos` will emit new todos as they are created. This is cool, but we want to see all of the todos created so far, not just the last one. Remember, stations are just observables, so we should be able to transform them somehow. Here, we can use the builtin method `.history()`.
+Here, `new_todos` will emit new todos as they are created. This is cool, but we want to see all of the todos created so far, not just the last one. Remember, stations are just observables, so we should be able to transform them somehow. Here, we can use the builtin method `.history()`.
 
 ```js
-const all_todos = todos.history();
+const todos = new_todos.history();
 // If you think this is cheating, the same thing is possible with the `scan` method as:
-const all_todos = todos.scan( (a, b) => [...a, b] );
+const todos = new_todos.scan([], (a, b) => [...a, b]);
 ```
 
 We still need someway for information from stations to make it back to the user. This where Durium takes an unconvential approach, and introduces *layouts*.
@@ -32,18 +34,18 @@ A layout is just a function that converts some value to HTML. Normally, these wo
 // This API doesn't actually exist, it's just for demonstration purposes
 du.view(
 	du("ul", du.for(
-		"todo in all_todos",
+		"todo in todos",
 		du("li", du.var("todo"))
 	))
 )
 ```
 
-This is nice and declarative, but it isn't reusable, it's specific to `all_todos`. Layouts are more generic than views. The view version above described how to render `all_todos`. A layout would describe how to render any `String[]`:
+This is nice and declarative, but it isn't reusable, it's specific to `todos`. Layouts are more generic than views. The view version above described how to render `todos`. A layout would describe how to render any `String[]`:
 ```js
 // This does exist :)
 const list = du.layout(
-	du("ul", fg.repeat(
-		du("li", fg.value())
+	du("ul", du.repeat(
+		du("li", du.value())
 	))
 );
 ```
@@ -56,24 +58,19 @@ Think about it. The `du.value()` bit can render a `String`, and `du.repeat(...)`
 Now, we can add the layout to our component:
 ```js
 const todo_list = du.component(
-	du("input", { value: todos.source }),          // When `todos` fires, it will send the value attribute
-	du("button", { onclick: todos.fire }, "Add!")  // When the button is clicked, `todos` will fire
-	list.of(all_todos)
+	du("input", { value: new_todos.source }),          // When `new_todos` fires, it will send the value attribute
+	du("button", { onclick: new_todos.fire }, "Add!")  // When the button is clicked, `new_todos` will fire
+	list.of(todos)
 );
 ```
 
-Components can contain other components, via the `.use()` method:
-```js
-const app = du.component(
-	du("h1", "Example App"),
-	todo_list.use()
-);
-```
 
 Finally, we have a finished component that we can mount (add to the DOM):
 ```js
-app.mount(document.body);
+du.mount(todo_list, document.body);
 ```
+
+Note that components are just functions, and a mountable component must take no arguments
 
 Also, layouts can display objects, by using `du.prop(<key>)` instead of `du.value()`:
 ```js
@@ -85,3 +82,4 @@ du.layout(
 ```
 
 This renders a `{ todo: string }[]`. 
+
