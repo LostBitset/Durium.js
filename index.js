@@ -86,6 +86,11 @@ class StationSource {
 		this.station_id = station_id;
 	}
 
+	getValue() {
+		let station = Station.reg[this.station_id];
+		station._source();
+	}
+
 	bindTo(func) {
 		let station = Station.reg[this.station_id];
 		station._source = func;
