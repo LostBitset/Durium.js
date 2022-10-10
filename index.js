@@ -249,7 +249,7 @@ var du = function du(tag, ...args) {
 		attrs = {};
 		inner = args;
 	}
-	return new DuNode(attrs, inner);
+	return new DuNode(tag, attrs, inner);
 }
 
 // THIS DOESNT ACTUALLY DO ANYTHING RIGHT NOW, I'LL ADD DOMPURIFY SOON
