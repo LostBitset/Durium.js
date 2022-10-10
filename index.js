@@ -93,7 +93,7 @@ class StationSource {
 
 	bindToElementAttribute(id, attr) {
 		this.bindTo(() => {
-			let el = document.getElementById(attr);
+			let el = document.getElementById(id);
 			return el[attr];
 		});
 	}
