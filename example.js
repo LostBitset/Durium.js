@@ -6,9 +6,9 @@ function todo_list() {
 	const todos = new_todos.history();
 	// Create a layout the displays a list as an HTML <ul>
 	const list = du.layout(
-	  du("ul", du.repeat(
-	    du("li", du.value())
-	  ))
+		du("ul", du.repeat(
+			du("li", du.value())
+		))
 	);
 	// Setup the station, and have the layout display it
 	// du.t(...) is just shorthand for du("template", ...)
