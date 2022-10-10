@@ -111,7 +111,7 @@ class DuNode {
 			([a, b]) => {
 				if (b instanceof StationSource) {
 					if (set_id === null) {
-						set_id = `du_genDuNode${this.getNextId()}`;
+						set_id = `du_genDuNode${DuNode.getNextId()}`;
 					}
 					// This is a side-effect!
 					b.bindToElementAttribute(set_id, a);
