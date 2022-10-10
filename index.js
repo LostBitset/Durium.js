@@ -110,7 +110,7 @@ class StationFiring {
 
 	toJS() {
 		let station = `Station.reg[${this.station_id}]`
-		return `${station}.fire()`;
+		return `${station}._fire()`;
 	}
 }
 
