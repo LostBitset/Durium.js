@@ -23,7 +23,7 @@ function todo_list() {
 function app() {
 	return du.div(
 		du("h1", "Example App"),
-		// everything is broken lol todo_list()
+		todo_list()
 	);
 }
 // Mount this new component
