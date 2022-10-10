@@ -219,11 +219,14 @@ class Layout {
 class LayoutNode {
 	station;
 	inner;
+	id;
+	static loaded_stations = {};
 	static next_id_RAW = 0;
 	
 	constructor(station, inner) {
 		this.station = station.proxy();
 		this.inner = inner;
+		this.id = LayoutNode.getNextId();
 	}
 
 	static getNextId() {
@@ -232,7 +235,7 @@ class LayoutNode {
 	}
 
 	toHtml() {
-		let set_id = `du_genLayoutNode-div-${LayoutNode.getNextId()}`;
+		let set_id = `du_genLayoutNode-div-${this.id}`;
 		let div = `<div id="${set_id}"></div>`;
 		this.station.subscribe( // This is a side-effect!
 			value => {
@@ -242,6 +245,7 @@ class LayoutNode {
 				}
 			}
 		);
+		LayoutNode.loaded_stations[this.id] = this.station;
 		let station = `Station.reg[${this.station.id}]`;
 		let suffix_js = `${station}._fire();`;
 		let load_suffix = `<script>${suffix_js}</script>`;
@@ -324,6 +328,8 @@ du.section = du_section;
 function du_repeat(...inner) {
 	return {
 		toHtmlGiven: value => {
+			console.log('du.repeat iterating over value:');
+			console.log(value);
 			let inner_all = value.flatMap(
 				inner_value => inner.map(
 					x => x.toGivenHtml(inner_value)
@@ -381,5 +387,11 @@ function mount_durium_component(component, domNode) {
 	let div = document.createElement('div');
 	domNode.appendChild(div);
 	div.innerHTML = topNode.toHtml();
+	Object.entries(LayoutNode.loaded_stations).forEach(
+		([_, station]) => {
+			station._fire();
+		}
+	);
+	LayoutNode.loaded_stations = {};
 }
 
