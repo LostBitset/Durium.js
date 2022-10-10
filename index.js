@@ -49,10 +49,16 @@ class StationSource {
 		this.station_id = station_id;
 	}
 
-	getSuffixEl(attr) {
-		let lhs = `Station.reg[${this.station_id}]._source`;
-		let rhs = `(() => el.attr)`
-		return `${lhs} = ${rhs}; `;
+	bindTo(func) {
+		let station = Station.reg[this.station_id];
+		station._source = func;
+	}
+
+	bindToElementAttribute(id, attr) {
+		this.bindTo(() => {
+			let el = document.getElementById(attr);
+			return el[attr];
+		});
 	}
 }
 
