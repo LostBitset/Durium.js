@@ -184,6 +184,19 @@ class DuNode {
 	}
 }
 
+// Layouts (not yet assigned a station)
+class Layout {
+	inner;
+
+	constructor(...inner) {
+		this.inner = du.t(...inner);
+	}
+
+	of(station) {
+		return new LayoutNode(station, this.inner);
+	}
+}
+
 // Layout nodes, which provide a station for the inner parts to display
 class LayoutNode {
 	station;
@@ -316,4 +329,10 @@ function du_template(...inner) {
 du.template = du_template;
 du.t = du_template;
 
+// Create a Layout object
+// Just forwards to the constructor
+function du_layout(...inner) {
+	return new Layout(...inner);
+}
+du.layout = du_layout;
 
