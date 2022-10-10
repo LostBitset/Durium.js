@@ -53,7 +53,7 @@ class Station {
 	proxy() {
 		let res = new Station();
 		res._source = () => {
-			return this._source;
+			return this._source();
 		};
 		this.subscribe(() => {
 			res._fire();
