@@ -176,15 +176,7 @@ class DuNode {
 			element_html = `<${this.tag} ${attrs_html}>`;
 		} else {
 			let inner_html = this.inner.map(
-				item => {
-					// Strings should just be sanitized, they don't need to be
-					// transformed into HTML
-					if (typeof item === "string") {
-						return sanitizeHtml(item);
-					} else {
-						return transform(item);
-					}
-				}
+				transform
 			).join("");
 			element_html = `<${this.tag} ${attrs_html}>${inner_html}</${this.tag}>`;
 		}
@@ -193,12 +185,12 @@ class DuNode {
 
 	// The normal toHtml function
 	toHtml() {
-		return this.toHtmlGivenTransform(x => x.toHtml());
+		return this.toHtmlGivenTransform(x => toHtmlFunction(x));
 	}
 
 	// You can have a DuNode inside of a layout
 	toHtmlGiven(value) {
-		return this.toHtmlGivenTransform(x => x.toHtmlGiven(value));
+		return this.toHtmlGivenTransform(x => toHtmlGivenFunction(x, value));
 	}
 }
 
@@ -304,13 +296,31 @@ function du_prop(k) {
 }
 du.prop = du_prop;
 
+// Just toGivenHtml but let's you use strings
+function toHtmlGivenFunction(obj, value) {
+	if (typeof obj === "string") {
+		return sanitizeHtml(obj);
+	} else {
+		return obj.toHtmlGiven(value);
+	}
+}
+
+// Just toHtml but let's you use strings
+function toHtmlFunction(obj) {
+	if (typeof obj === "string") {
+		return sanitizeHtml(obj);
+	} else {
+		return obj.toHtml();
+	}
+}
+
 // Layout-internal node
 // Renders other nodes, with the inner value set to a specific property of the outer value
 function du_section(k, ...inner) {
 	return {
 		toHtmlGiven: value => {
 			let inner_converted = inner.map(
-				x => x.toGivenHtml(value[k])
+				x => toHtmlGivenFunction(x, value[k])
 			);
 			return `<div class="du_gen-section_${k}">${inner_converted.join("")}</div>`;
 		}
@@ -330,7 +340,7 @@ function du_repeat(...inner) {
 			console.log(value);
 			let inner_all = value.flatMap(
 				inner_value => inner.map(
-					x => x.toGivenHtml(inner_value)
+					x => toHtmlGivenFunction(x, inner_value)
 				)
 			);
 			return `<div class="du_gen-repeat">${inner_all.join("")}</div>`
@@ -346,7 +356,7 @@ function du_opt(...inner) {
 		toHtmlGiven: value => {
 			if (value !== null) {
 				let inner_converted = inner.map(
-					x => x.toGivenHtml(value)
+					x => toHtmlGivenFunction(x, value)
 				);
 				return `<div class="du_gen-opt_nonnull">${inner_converted.join("")}</div>`;
 			} else {
