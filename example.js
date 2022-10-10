@@ -14,7 +14,7 @@ function todo_list() {
 	const input = du("input", { value: new_todos.source });
 	// When new_todos fires, clear the value attribute of the <input>
 	new_todos.subscribe(() => {
-		// You should be careful using getElement, actual HTML element
+		// You should be careful using getElement, the actual HTML element
 		// doesn't exist until the component is mounted
 		// Just make sure it won't be executed immediately
 		// In this case we're totally fine
