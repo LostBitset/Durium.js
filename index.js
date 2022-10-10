@@ -83,11 +83,6 @@ const void_elements = [
 	'keygen', 'link', 'meta', 'param', 'source', 'track', 'wbr'
 ];
 
-// Get the prefix of an HTML suffix (the part that defines the element) given an ID
-function du_suffix_prefix(id) {
-	return `let el = document.getElementById("${id}"); `;
-}
-
 // Durium nodes, which are like DOM nodes but allowed to contain layout and layout-internal nodes
 // These can be rendered as HTML at any time (ideally only once)
 class DuNode {
