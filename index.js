@@ -134,7 +134,7 @@ class StationFiring {
 		this.station_id = station_id;
 	}
 
-	toJS() {
+	toJs() {
 		let station = `Station.reg[${this.station_id}]`;
 		return `${station}._fire()`;
 	}
@@ -204,11 +204,11 @@ class DuNode {
 					b.bindToElementAttribute(set_id, a);
 					return null;
 				} else if (b instanceof StationFiring) {
-					return [a, b.toJS()];
+					return [a, b.toJs()];
 				} else if (b instanceof StationElementFiring) {
-					let station = Station.reg[b.id];
+					let station = Station.reg[b.station_id];
 					station._source = () => this.getElement();
-					return [a, b.idToJS(set_id)];
+					return [a, b.idToJs(set_id)];
 				} else {
 					return [a, b];
 				}
