@@ -21,7 +21,7 @@ class Station {
 	}
 
 	_fire(override) {
-		if (override === undefined) {
+		if (override !== undefined) {
 			value = this._source();
 		} else {
 			value = override;
