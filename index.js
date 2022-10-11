@@ -21,10 +21,11 @@ class Station {
 	}
 
 	_fire(override) {
+		let value;
 		if (override !== undefined) {
-			value = this._source();
-		} else {
 			value = override;
+		} else {
+			value = this._source();
 		}
 		for (const subscriber of this.subscribers) {
 			subscriber(value);
