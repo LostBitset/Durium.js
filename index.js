@@ -42,7 +42,7 @@ class Station {
 	map(transform) {
 		let res = new Station();
 		res._source = () => {
-			return transform(this._source)
+			return transform(this._source())
 		};
 		this.subscribe(() => {
 			res._fire();
