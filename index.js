@@ -79,6 +79,19 @@ class Station {
 			return this.scan([], (state, value) => [...state, value]);
 		}
 	}
+
+	static scanMulti(init, ...pairs) {
+		let res = new Station();
+		let state = { __state: init };
+		res._source = () => state.__state;
+		for (const [station, update] of pairs) {
+			station.subscribe(value => {
+				state.__state = update(state.__state, value);
+				res._fire();
+			})
+		}
+		return res;
+	}
 }
 
 // The source of values for a station
