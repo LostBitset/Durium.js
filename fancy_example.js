@@ -14,7 +14,7 @@ function todo_list() {
 		JSON.parse(localStorage.getItem('todos')) || [],
 		[new_todos, (s, todo) => [todo, ...s]],
 		[clicks, (s, el) => s.filter(x => x !== el.innerText)]
-	);
+	).rejectValue('');
 	const input = du("input", { value: new_todos.source });
 	new_todos.subscribe(() => { input.getElement().value = ""; });
 	todos.subscribe(todos => localStorage.setItem('todos', JSON.stringify(todos)));

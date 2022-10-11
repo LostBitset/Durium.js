@@ -66,6 +66,40 @@ class Station {
 		return res;
 	}
 
+	filter(pred) {
+		let res = new Station();
+		res._source = () => {
+			return this._source();
+		};
+		this.subscribe(value => {
+			if (pred(value)) {
+				res._fire(value);
+			}
+		});
+		return res;
+	}
+
+	reject(pred) {
+		let res = new Station();
+		res._source = () => {
+			return this._source();
+		};
+		this.subscribe(value => {
+			if (!pred(value)) {
+				res._fire(value);
+			}
+		});
+		return res;
+	}
+
+	filterValue(val) {
+		return this.filter(x => x === val);
+	}
+
+	rejectValue(val) {
+		return this.reject(x => x !== val);
+	}
+
 	scan(init, update) {
 		let res = new Station();
 		let state = { __state: init };
