@@ -134,7 +134,7 @@ class StationFiring {
 	}
 
 	toJS() {
-		let station = `Station.reg[${this.station_id}]`
+		let station = `Station.reg[${this.station_id}]`;
 		return `${station}._fire()`;
 	}
 }
@@ -145,6 +145,13 @@ class StationElementFiring {
 
 	constructor(station_id) {
 		this.station_id = station_id;
+	}
+
+	idToJs(el_id) {
+		let station = `Station.reg[${this.station_id}]`;
+		let el = `document.getElementById("${el_id}")`;
+		let bindToStation = `${station}._fire(e_a); `;
+		return `{ let e_a = ${el}; ${bindToStation}}`;
 	}
 }
 
@@ -197,6 +204,10 @@ class DuNode {
 					return null;
 				} else if (b instanceof StationFiring) {
 					return [a, b.toJS()];
+				} else if (b instanceof StationElementFiring) {
+					let station = Station.reg[b.id];
+					station._source = () => this.getElement();
+					return [a, b.idToJS(set_id)];
 				} else {
 					return [a, b];
 				}
