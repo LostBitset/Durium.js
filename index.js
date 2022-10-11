@@ -139,6 +139,15 @@ class StationFiring {
 	}
 }
 
+// This just allows you to control a station and have it fire the element
+class StationElementFiring {
+	station_id;
+
+	constructor(station_id) {
+		this.station_id = station_id;
+	}
+}
+
 // Void elements in HTML
 const void_elements = [
 	'area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input',
