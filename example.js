@@ -7,7 +7,7 @@ function todo_list() {
 	// Create a new station that sends out the current list of todos
 	const todos = Station.scanMulti(
 		[], // initial state
-		[new_todos, (state, todo) => [*state, todo]],
+		[new_todos, (state, todo) => [todo, ...state]],
 		[clicks, (state, todo) => state.filter(x => x !== todo)]
 	);
 	// Create a layout the displays a list as an HTML <ul>
