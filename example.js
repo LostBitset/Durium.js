@@ -8,15 +8,14 @@ function todo_list() {
 	const todos = Station.scanMulti(
 		[], // initial state
 		[new_todos, (state, todo) => [todo, ...state]],
-		[clicks, (state, todo) => state.filter(x => x !== todo)]
-	).map(x => { console.log(x); return x; });
+		[clicks, (state, el) => state.filter(x => x !== el.innerText)]
+	);
 	// Create a layout the displays a list as an HTML <ul>
 	// and fires when you click items 
 	const list = du.layout(
 		du("ul", du.repeat(
 			du("li", {
-				onclick: clicks.fire,
-				innerText: clicks.source
+				onclick: clicks.fireElement,
 			}, du.value())
 		))
 	);

@@ -20,8 +20,12 @@ class Station {
 		return Station.next_id_RAW;
 	}
 
-	_fire() {
-		let value = this._source();
+	_fire(override) {
+		if (override === undefined) {
+			value = this._source();
+		} else {
+			value = override;
+		}
 		for (const subscriber of this.subscribers) {
 			subscriber(value);
 		}
@@ -44,8 +48,8 @@ class Station {
 		res._source = () => {
 			return transform(this._source())
 		};
-		this.subscribe(() => {
-			res._fire();
+		this.subscribe(value => {
+			res._fire(transform(value));
 		});
 		return res;
 	}
@@ -55,8 +59,8 @@ class Station {
 		res._source = () => {
 			return this._source();
 		};
-		this.subscribe(() => {
-			res._fire();
+		this.subscribe(value => {
+			res._fire(value);
 		});
 		return res;
 	}
@@ -91,6 +95,10 @@ class Station {
 			})
 		}
 		return res;
+	}
+
+	get fireElement() {
+		return new StationElementFiring(this.id);
 	}
 }
 
@@ -153,7 +161,7 @@ class DuNode {
 		this.is_void_element = void_elements.includes(tag);
 		this.attrs = Object.entries(attrs_object)
 		this.inner = inner;
-		this.id = DuNode.getNextId();
+		this.id = null;
 	}
 
 	static getNextId() {
@@ -170,6 +178,7 @@ class DuNode {
 	}
 
 	toHtmlGivenTransform(transform) {
+		this.id = DuNode.getNextId();
 		let set_id = this.getHtmlId();
 		let attrs_str = this.attrs.map(
 			([a, b]) => {
@@ -210,7 +219,10 @@ class DuNode {
 
 	// You can have a DuNode inside of a layout
 	toHtmlGiven(value) {
-		return this.toHtmlGivenTransform(x => toHtmlGivenFunction(x, value));
+		return this.toHtmlGivenTransform(x => {
+			this.id = DuNode.getNextId();
+			return toHtmlGivenFunction(x, value)
+		});
 	}
 }
 
