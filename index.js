@@ -150,7 +150,7 @@ class StationElementFiring {
 
 	idToJs(el_id) {
 		let station = `Station.reg[${this.station_id}]`;
-		let el = `document.getElementById("${el_id}")`;
+		let el = `document.getElementById('${el_id}')`;
 		let bindToStation = `${station}._fire(e_a); `;
 		return `{ let e_a = ${el}; ${bindToStation}}`;
 	}
