@@ -12,9 +12,9 @@ function todo_list() {
 	const [list, clicks] = clickable_ul();
 	const todos = Station.scanMulti(
 		JSON.parse(localStorage.getItem('todos')) || [],
-		[new_todos, (s, todo) => [todo, ...s]],
+		[new_todos.rejectValue(''), (s, todo) => [todo, ...s]],
 		[clicks, (s, el) => s.filter(x => x !== el.innerText)]
-	).rejectValue('');
+	);
 	const input = du("input", { value: new_todos.source });
 	new_todos.subscribe(() => { input.getElement().value = ""; });
 	todos.subscribe(todos => localStorage.setItem('todos', JSON.stringify(todos)));

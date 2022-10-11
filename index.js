@@ -97,7 +97,7 @@ class Station {
 	}
 
 	rejectValue(val) {
-		return this.reject(x => x !== val);
+		return this.filter(x => x !== val);
 	}
 
 	scan(init, update) {
