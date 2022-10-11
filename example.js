@@ -5,14 +5,16 @@ function todo_list() {
 	// Send items as they are clicked
 	const clicks = new Station();
 	// Create a new station that sends out the current list of todos
+	// The first argument is the initial state, and
+	// the others are station-update pairs
 	const todos = Station.scanMulti(
-		[], // initial state
+		[],
 		[new_todos, (state, todo) => [todo, ...state]],
 		[clicks, (state, el) => state.filter(x => x !== el.innerText)]
 	);
 	// Create a layout the displays a list as an HTML <ul>
-	// and fires when you click items 
-	const list = du.layout(
+	// and fires (sending the element itself) when you click items
+	const clickable_list = du.layout(
 		du("ul", du.repeat(
 			du("li", {
 				onclick: clicks.fireElement,
@@ -34,7 +36,7 @@ function todo_list() {
 	return du.div(
 		input,
 		du("button", { onclick: new_todos.fire }, "Add!"),
-		list.of(todos)
+		clickable_list.of(todos)
 	);
 }
 // Create a component that uses the `todo_list` component
