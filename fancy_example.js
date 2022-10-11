@@ -10,12 +10,14 @@ function clickable_ul() {
 function todo_list() {
 	const new_todos = new Station();
 	const [list, clicks] = clickable_ul();
-	const todos = Station.scanMulti([],
+	const todos = Station.scanMulti(
+		JSON.parse(localStorage.getItem('todos')) || [],
 		[new_todos, (s, todo) => [todo, ...s]],
 		[clicks, (s, el) => s.filter(x => x !== el.innerText)]
 	);
 	const input = du("input", { value: new_todos.source });
 	new_todos.subscribe(() => { input.getElement().value = ""; });
+	todos.subscribe(todos => localStorage.setItem('todos', JSON.stringify(todos)));
 	return du.div(
 		du("h1", "To-do List"),
 		input,
