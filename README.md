@@ -8,12 +8,14 @@ A Durium component is just fancy HTML, but with three unique abilities:
 2. The ability to bind events to the firing of stations
 3. The ability to contain *layouts*
 
-See the `example.js` file for a simple to-do list with plenty of comments explaining what's going on. 
+See the `basic_example.js` file for a simple to-do list with plenty of comments explaining what's going on. 
+
+See the `fancy_example.js` file for a more advanced to-do list. 
 
 The first two allow stations to be defined in terms of the state of the DOM. That might look something like this:
 ```js
 const new_todos = new Station();
-const component = du.component(
+const todo_input = du.div(
 	du("input", { value: new_todos.source }),          // When `new_todos` fires, it will send the value attribute
 	du("button", { onclick: new_todos.fire }, "Add!")  // When the button is clicked, `newtodos` will fire
 );
@@ -57,7 +59,7 @@ Think about it. The `du.value()` bit can render a `String`, and `du.repeat(...)`
 
 Now, we can add the layout to our component:
 ```js
-const todo_list = du.component(
+const todo_list = du.div(
 	du("input", { value: new_todos.source }),          // When `new_todos` fires, it will send the value attribute
 	du("button", { onclick: new_todos.fire }, "Add!")  // When the button is clicked, `new_todos` will fire
 	list.of(todos)
@@ -82,4 +84,6 @@ du.layout(
 ```
 
 This renders a `{ todo: string }[]`. 
+
+Also, if you want to be able to access an entire element, you can use `station.fireElement` instead of `station.fire`. When doing this, you don't need to set a `source`, it will send the `Element` object to all subscribers watching that station. 
 
