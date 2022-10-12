@@ -1,0 +1,4 @@
+#!/bin/bash
+
+npx terser --compress --mangle -- index.js > index.min.js
+
