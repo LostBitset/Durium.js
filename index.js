@@ -190,6 +190,10 @@ class StationElementFiring {
 	}
 }
 
+// Memoization!
+const to_html_memo = new WeakMap();
+const to_html_given_memo = new WeakMap();
+
 // Void elements in HTML
 const void_elements = [
 	'area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input',
@@ -382,18 +386,34 @@ du.prop = du_prop;
 function toHtmlGivenFunction(obj, value) {
 	if (typeof obj === "string") {
 		return sanitizeHtml(obj);
-	} else {
-		return obj.toHtmlGiven(value);
 	}
+	let obj_map;
+	if (to_html_given_memo.has(obj)) {
+		obj_map = to_html_given_memo.get(obj);
+		if (obj_map.has(value)) {
+			return to_html_given_memo.get(obj).get(value);
+		}
+	} else {
+		obj_map = new Map();
+		to_html_given_memo.set(obj, obj_map);
+	}
+	let res = obj.toHtmlGiven(value);
+	obj_map.set(value, res);
+	return res;
 }
 
 // Just toHtml but let's you use strings
 function toHtmlFunction(obj) {
 	if (typeof obj === "string") {
 		return sanitizeHtml(obj);
-	} else {
-		return obj.toHtml();
 	}
+	let obj_map;
+	if (to_html_memo.has(obj)) {
+		return to_html_memo.get(obj);
+	}
+	let res = obj.toHtml();
+	to_html_memo.set(obj, res);
+	return res;
 }
 
 // Layout-internal node
