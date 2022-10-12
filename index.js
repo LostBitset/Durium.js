@@ -514,3 +514,15 @@ function mount_durium_component(component, domNode) {
 	LayoutNode.loaded_stations = {};
 }
 
+// A super short function to be used by inline JS
+function du_f_(station_id) {
+	Station.reg[station_id]._fire();
+}
+
+// A super short function to be used by inline JS
+function du_fe_(station_id, el_id) {
+	let station = Station.reg[station_id];
+	let e_a = document.getElementById(el_id);
+	station._fire(e_a);
+}
+
