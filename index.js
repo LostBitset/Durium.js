@@ -352,9 +352,19 @@ var du = function du(tag, ...args) {
 	return new DuNode(tag, attrs, inner);
 }
 
-// THIS DOESNT ACTUALLY DO ANYTHING RIGHT NOW, I'LL ADD DOMPURIFY SOON
+var du_has_he = undefined;
+
 function encodeHtml(dirty) {
-	return dirty; // NO NO NO NO NO
+	if (du_has_he) {
+		return he.encode(dirty);
+	} else if (du_has_he === false) {
+		let textarea_el = document.createElement("textarea");
+		textarea_el.textContent = dirty;
+		return textarea_el.innerHTML;
+	} else {
+		du_has_he = !!(window.he && window.he.encode);
+		return encodeHtml(dirty);
+	}
 }
 
 // Layout internal nodes are just objects with the `toHtmlGiven` function
