@@ -171,6 +171,8 @@ class StationFiring {
 	toJs() {
 		let station = `Station.reg[${this.station_id}]`;
 		return `${station}._fire()`;
+		let station_id = this.station_id;
+		return `du_f_(${station_id})`;
 	}
 }
 
@@ -183,10 +185,8 @@ class StationElementFiring {
 	}
 
 	idToJs(el_id) {
-		let station = `Station.reg[${this.station_id}]`;
-		let el = `document.getElementById('${el_id}')`;
-		let bindToStation = `${station}._fire(e_a); `;
-		return `{ let e_a = ${el}; ${bindToStation}}`;
+		let station_id = this.station_id;
+		return `du_fe_(${station_id}, ${el_id})`;
 	}
 }
 
