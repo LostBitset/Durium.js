@@ -169,8 +169,6 @@ class StationFiring {
 	}
 
 	toJs() {
-		let station = `Station.reg[${this.station_id}]`;
-		return `${station}._fire()`;
 		let station_id = this.station_id;
 		return `du_f_(${station_id})`;
 	}
