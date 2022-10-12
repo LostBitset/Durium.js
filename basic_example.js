@@ -10,7 +10,7 @@ function todo_list() {
 	const todos = Station.scanMulti(
 		[],
 		[new_todos, (state, todo) => [todo, ...state]],
-		[clicks, (state, el) => state.filter(x => x !== el.innerText)]
+		[clicks, (state, el) => state.filter(x => x.trim() !== el.innerText)]
 	);
 	// Create a layout the displays a list as an HTML <ul>
 	// and fires (sending the element itself) when you click items

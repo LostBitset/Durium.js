@@ -13,7 +13,7 @@ function todo_list() {
 	const todos = Station.scanMulti(
 		JSON.parse(localStorage.getItem('todos')) || [],
 		[new_todos.rejectValue(''), (s, todo) => [todo, ...s]],
-		[clicks, (s, el) => s.filter(x => x !== el.innerText)]
+		[clicks, (s, el) => s.filter(x => x.trim() !== el.innerText)]
 	);
 	const input = du("input", { value: new_todos.source });
 	new_todos.subscribe(() => { input.getElement().value = ""; });
