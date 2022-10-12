@@ -2,7 +2,7 @@
 
 // A "free observable"
 // Once you create one, you describe when it fires and what it fires afterwards
-export class Station {
+class Station {
 	static reg = {};
 	static next_id_RAW = 0;
 	subscribers;
@@ -338,7 +338,7 @@ function isNodeObject(obj) {
 
 // The actual `du` function object
 // By itself (as a function), it is used to create simple HTML elements
-export var du = function du(tag, ...args) {
+var du = function du(tag, ...args) {
 	let attrs, inner;
 	if (typeof args[0] === "object" && !isNodeObject(args[0])) {
 		attrs = args[0];
@@ -512,12 +512,12 @@ function mount_durium_component(component, domNode) {
 }
 
 // A super short function to be used by inline JS
-export function du_f_(station_id) {
+function du_f_(station_id) {
 	Station.reg[station_id]._fire();
 }
 
 // A super short function to be used by inline JS
-export function du_fe_(station_id, el_id) {
+function du_fe_(station_id, el_id) {
 	let station = Station.reg[station_id];
 	let e_a = document.getElementById(el_id);
 	station._fire(e_a);
