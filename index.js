@@ -186,7 +186,7 @@ class StationElementFiring {
 
 	idToJs(el_id) {
 		let station_id = this.station_id;
-		return `du_fe_(${station_id}, ${el_id})`;
+		return `du_fe_(${station_id}, "${el_id}")`;
 	}
 }
 
