@@ -353,7 +353,7 @@ var du = function du(tag, ...args) {
 }
 
 // THIS DOESNT ACTUALLY DO ANYTHING RIGHT NOW, I'LL ADD DOMPURIFY SOON
-function sanitizeHtml(dirty) {
+function encodeHtml(dirty) {
 	return dirty; // NO NO NO NO NO
 }
 
@@ -365,7 +365,7 @@ function sanitizeHtml(dirty) {
 function du_value() {
 	return {
 		toHtmlGiven: value => {
-			return sanitizeHtml(value);
+			return encodeHtml(value);
 		}
 	};
 }
@@ -376,7 +376,7 @@ du.value = du_value;
 function du_prop(k) {
 	return {
 		toHtmlGiven: value => {
-			return sanitizeHtml(value[k]);
+			return encodeHtml(value[k]);
 		}
 	};
 }
@@ -385,7 +385,7 @@ du.prop = du_prop;
 // Just toGivenHtml but let's you use strings
 function toHtmlGivenFunction(obj, value) {
 	if (typeof obj === "string") {
-		return sanitizeHtml(obj);
+		return encodeHtml(obj);
 	}
 	let obj_map;
 	if (to_html_given_memo.has(obj)) {
@@ -405,7 +405,7 @@ function toHtmlGivenFunction(obj, value) {
 // Just toHtml but let's you use strings
 function toHtmlFunction(obj) {
 	if (typeof obj === "string") {
-		return sanitizeHtml(obj);
+		return encodeHtml(obj);
 	}
 	let obj_map;
 	if (to_html_memo.has(obj)) {
