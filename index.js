@@ -497,12 +497,15 @@ function du_mount(component, domNode) {
 }
 du.mount = du_mount;
 
+const mounted_prefix_comment = '<!-- Durium.js: mounted component -->';
+
 // The actual function to mount a Durium component
 function mount_durium_component(component, domNode) {
 	let topNode = component();
 	let div = document.createElement('div');
+	div.setAttribute("class", "du_genApplication");
 	domNode.appendChild(div);
-	div.innerHTML = topNode.toHtml();
+	div.innerHTML = `${mounted_prefix_comment}${topNode.toHtml()}`; 
 	Object.entries(LayoutNode.loaded_stations).forEach(
 		([_, station]) => {
 			station._fire();
