@@ -1,5 +1,5 @@
 # Durium.js
-A Mithril-like web framework built on observables
+A simple web framework. Build with observables and ways to show them. 
 
 ### A Short Guide
 
