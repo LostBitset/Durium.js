@@ -91,7 +91,7 @@ This renders a `{ todo: string }[]`.
 
 Also, if you want to be able to access an entire element, you can use `station.fireElement` instead of `station.fire`. When doing this, you don't need to set a `source`, it will send the `Element` object to all subscribers watching that station. 
 
-### You might have heard of...
+### Think of it as...
 
 **Cycle but simpler and more dynamic**
 
