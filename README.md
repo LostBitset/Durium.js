@@ -1,6 +1,8 @@
 # Durium.js
 A simple web framework. Build with observables and ways to show them. 
 
+**Durium.js is not a finished product, but I still don't plan to break things.**
+
 ### A Short Guide
 
 First, Durium is built around *stations*, which can be thought of as "free observables". Anyone with access to a `Station` object can control the source of it's values (through `station.source`), or cause it to emit one of those values (by calling `station.fire()`). 
@@ -91,7 +93,13 @@ Also, if you want to be able to access an entire element, you can use `station.f
 
 ### You might have heard of...
 
+**Cycle but simpler and more dynamic**
+
 The closest framework to Durium is probably *Cycle.js*, which adopts a similar approach of defining manipulating observables, and defining the DOM as the output of them. This is a model that enables both powerful idioms for managing state without obscuring the reality of how the DOM works to the point of making everything confusing. However, the sources of data in Cycle are computed from the outside of the DOM. In contrast, Durium uses *stations*, which are observables where you define the source *after* creating it. This let's you put sources inside the DOM, which is (IMO) much more ergonomic in general. Additionally, stations are just ordinary objects, so they're usually *scoped*. This makes it easier to modularize your programs at the sub-component level, without having to worry about what uses what as a source. 
 
+**Mithril but with observables instead of MVC**
+
 In terms of how it looks, how you interact with the framework is clearly inspired by *Mithril.js*. You create DOM nodes in pure JavaScript, using the `du` function, and other utilities are implemented as `du.whatever`. Mithril also does everything in JS, you just include it in a `<script>` tag. The simplicity of Mithril is also (IMO) fantastic. Components are just objects with a view function. In Durium, we don't need the object part, because we use *stations* to keep track of state. Durium components are just functions. 
+
+Of course, Durium.js is still a work-in-progress. These comparisons aren't for marketing, their to exaplain where Durium would fit in with other frameworks if it reaches parity with them. 
 
