@@ -21,7 +21,7 @@ The first two allow stations to be defined in terms of the state of the DOM. Tha
 const new_todos = new Station();
 const todo_input = du.div(
 	du("input", { value: new_todos.source }),          // When `new_todos` fires, it will send the value attribute
-	du("button", { onclick: new_todos.fire }, "Add!")  // When the button is clicked, `newtodos` will fire
+	du("button", { onclick: new_todos.fire }, "Add!")  // When the button is clicked, `new_todos` will fire
 );
 ```
 
