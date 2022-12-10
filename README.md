@@ -73,7 +73,7 @@ const todo_list = du.div(
 
 Finally, we have a finished component that we can mount (add to the DOM):
 ```js
-du.mount(todo_list, document.body);
+du.mount(() => todo_list, document.body);
 ```
 
 Note that components are just functions, and a mountable component must take no arguments
